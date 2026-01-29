@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="icon" href="logo.png" type="image/png" sizes="32x32">
+    <title>NLN Consulting | Salud Corporativa Integral</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+     /* --- 1) CONFIGURACIÓN VISUAL · PALETA LILA SUAVE --- */
+:root {
+  /* Colores principales suaves */
+  --primary: #9E8FD6;           /* Lila suave elegante */
+  --primary-dark: #8776C6;      /* Lila un poco más intenso pero no rudo */
+  --secondary: #CFC6F7;         /* Lila pastel */
+  --secondary-light: #EEE9FF;   /* Lavanda muy clara */
+  --accent: #E6DAFF;            /* Pastel para detalles */
+  --gold: #D4AF37;
+
+  /* Fondo y textos */
+  --bg-body: #FAF9FF;           /* Blanco lavanda muy sutil */
+  --text-main: #3A2F55;         /* Gris-lila legible */
+  --text-light: #6B5A8C;        /* Secundario suave */
+
+  /* Efectos Glass y sombras suaves */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(14px);
+  --shadow-soft: 0 10px 40px -10px rgba(60, 35, 120, 0.12);
+  --shadow-hover: 0 20px 50px -12px rgba(120, 90, 200, 0.25);
+
+  --radius-card: 24px;
+  --radius-btn: 50px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-body);
+  /* Fondo sutil para dar profundidad */
+  background-image: radial-gradient(circle at 10% 20%, #F5F3FF 0%, #F0EFF9 90%);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+
+/* --- 2) NAVBAR (MODERNA FLOTANTE) --- */
+.navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 50px;
+
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  top: 0;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0 0 20px 20px;
+  padding: 15px 5%;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+}
+
+.nav-links { display: flex; gap: 35px; list-style: none; }
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0; height: 2px;
+  bottom: -5px; left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+/* Botón CTA en tonos suaves */
+.btn-cita {
+  padding: 12px 30px;
+  background: linear-gradient(90deg, var(--primary) 0%, #B6A8F2 100%);
+  color: white;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(150, 130, 220, 0.35);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+.btn-cita:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(140, 120, 220, 0.45);
+}
+
+/* --- 3) HERO (GLOBAL) · Base (no afecta a #inicio porque lo sobreescribimos abajo) --- */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+  position: relative;
+
+  /* Mantenemos un estilo por default para otras páginas si lo usas */
+  background: linear-gradient(135deg, rgba(45,36,56,0.9), rgba(74,64,99,0.7)),
+              url('https://images.unsplash.com/photo-1576091160550-2187d80a16f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* Decoración de fondo abstracta */
+.hero::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 100px;
+  background: linear-gradient(to top, var(--bg-body), transparent);
+}
+
+.hero-content { max-width: 900px; }
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  margin-bottom: 25px;
+  line-height: 1.1;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 50px;
+  color: rgba(255,255,255,0.9);
+}
+
+/* --- 3.1) HERO ESPECÍFICO DE INICIO (CLARO, ELEGANTE) --- */
+/* Usamos el ID #inicio para que sea independiente */
+#inicio.hero {
+  color: var(--text-main);
+  background: linear-gradient(160deg, #FFFFFF 0%, #F8F6FF 55%, #F2EEFF 100%);
+  background-attachment: scroll; /* Evita el efecto 'fixed' que puede verse pesado */
+}
+
+/* Al ser fondo claro, forzamos los textos a tonos oscuros dentro del hero */
+#inicio.hero h1,
+#inicio.hero p { color: var(--text-main); text-shadow: none; }
+
+/* Si en tu HTML dejaste spans en blanco (#ffffff), los neutralizamos aquí sin tocar el HTML */
+#inicio.hero h1 span,
+#inicio.hero p span {
+  color: var(--primary) !important; /* Lila bonito para resaltar palabras */
+}
+
+/* --- 4) SECCIONES GENERALES --- */
+section { padding: 120px 10%; position: relative; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 20px;
+  position: relative; display: inline-block;
+}
+
+.section-header .line {
+  width: 60px; height: 6px;
+  background: var(--gold);
+  margin: 0 auto; border-radius: 10px;
+  transition: width 0.3s;
+}
+.section-header:hover .line { width: 120px; }
+
+/* --- 5) FILOSOFÍA (Glass Cards) --- */
+.philosophy-grid {
+   display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.philosophy-text {
+    flex: 1;
+}
+
+.philosophy-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.philosophy-logo img {
+    width: 100%;
+    height: auto;
+    max-width: 410px; /* controla qué tan grande lo quieres */
+    opacity: 0.9; /* opcional, elegante */
+}
+
+/* Tarjetas */
+.philosophy-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+
+.philosophy-card {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  padding: 50px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
+}
+
+.philosophy-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--gold);
+  transition: height 0.3s;
+}
+
+.philosophy-card:hover {
+  transform: translateY(-15px);
+  box-shadow: var(--shadow-hover);
+}
+
+.philosophy-card h3 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 15px;
+  font-size: 1.5rem;
+}
+.philosophy-card p { color: var(--text-light); font-size: 1.05rem; }
+
+/* --- 6) CARRUSEL --- */
+.carousel-section {
+  padding: 100px 0;
+  background: linear-gradient(180deg, #EEEAFE 0%, #EDE7FF 100%);
+  position: relative;
+}
+
+.carousel-container {
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  height: 560px;
+  border-radius: 30px;
+  background-color: #ffffff; /* color de las bandas */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+  overflow: hidden; position: relative;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  opacity: 0; transform: scale(1.06);
+  transition: opacity 1s ease, transform 6s linear;
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.slide.active { opacity: 1; transform: scale(1); }
+
+.slide-caption {
+  position: absolute; left: 40px; right: 40px; bottom: 40px;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 30px; border-radius: 20px;
+  color: var(--text-main);
+  max-width: 340px;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* --- 7) SERVICIOS --- */
+.services-section { background-color: var(--bg-body); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px; max-width: 1200px; margin: 0 auto;
+}
+
+.service-card {
+  background: #ffffff;
+  padding: 50px 30px;
+  border-radius: var(--radius-card);
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s ease;
+  position: relative; z-index: 1;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+}
+
+.icon-box {
+  font-size: 45px; margin-bottom: 25px;
+  color: var(--primary);
+  background: #F5F1FF;
+  width: 90px; height: 90px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform 0.3s, background 0.3s, color 0.3s;
+}
+
+.service-card:hover .icon-box {
+  transform: rotate(10deg) scale(1.1);
+  background: var(--secondary); color: white;
+}
+
+.service-card ul {
+  text-align: left; margin-top: 25px; list-style: none; color: var(--text-light);
+}
+.service-card li { margin-bottom: 12px; padding-left: 10px; }
+.service-card li::before { content: "• "; color: var(--gold); font-weight: bold; margin-right: 5px; }
+
+/* --- 8) PARTNERS --- */
+.partners { padding: 80px 0; }
+.partner-logos {
+  display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 50px;
+}
+/* Tarjeta base (puedes mantener tus estilos, ajusté padding y bordes) */
+.partner-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;                /* antes tenías 75px, era demasiado y puede “apretar” el logo */
+  background: #fff;
+  border-radius: 24px;          /* 55px es válido, pero 24px se ve más sobrio; ajusta a gusto */
+  font-weight: 700;
+  color: #999;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: 0.3s;
+  border: 1px solid transparent;
+
+  /* Tamaño máximo del “marco” de cada logo */
+  width: 100%;
+  max-width: 280px;            /* controla el ancho de la tarjeta */
+  aspect-ratio: 3 / 2;         /* crea una caja estable (3:2). Puedes usar 16/9 o 1/1 */
+  overflow: hidden;            /* por si entra un logo con proporción rara */
+}
+
+/* Hover */
+.partner-item:hover {
+  color: var(--primary);
+  border-color: var(--secondary);
+  transform: translateY(-5px);
+}
+
+/* Imagen del logo: que conserve proporción y nunca se deforme */
+.partner-item img {
+  display: block;
+  max-width: 90%;
+  max-height: 90%;
+  width: auto;                 /* ¡importante! que no estire horizontal */
+  height: auto;                /* ¡importante! que no estire vertical */
+  object-fit: contain;         /* encaja sin deformar dentro de la tarjeta */
+  object-position: center;     /* centrado perfecto */
+}
+
+/* Grid contenedor (opcional si ya tienes estilos para .partner-logos) */
+.partner-logos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+
+/* --- 9) CONTACTO (GLOBAL) --- */
+.contact {
+  /* Antes era un gradiente oscuro; lo suavizamos globalmente */
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F4FF 100%);
+  color: var(--text-main);
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 100px 5%;
+}
+
+/* --- 9.1) CONTACTO ESPECÍFICO #contacto (más blanco/elegante) --- */
+#contacto.contact {
+  background: linear-gradient(160deg, #FFFFFF 0%, #FBFAFF 45%, #F3EEFF 100%);
+}
+
+.contact-flex {
+  display: flex; justify-content: center; gap: 40px; margin-top: 60px; flex-wrap: wrap;
+}
+
+.contact-box {
+  background: rgba(255,255,255,0.75);
+  padding: 40px; border-radius: 30px; width: 350px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(160,140,220,0.20);
+  transition: transform 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 30px -10px rgba(120, 90, 200, 0.18);
+}
+
+.contact-box:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(120,90,200,0.35);
+  box-shadow: 0 18px 40px -14px rgba(120, 90, 200, 0.28);
+}
+
+.contact h2 { color: var(--primary); }
+.contact-box h3 { margin-bottom: 15px; color: var(--primary-dark); }
+.contact-box p { font-size: 1.1rem; margin-bottom: 10px; opacity: 0.95; }
+
+/* --- 10) ANIMACIONES DE SCROLL (REVEAL) --- */
+.reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 11) RESPONSIVE --- */
+@media (max-width: 768px) {
+  .navbar {
+    width: 100%; top: 0; border-radius: 0;
+    justify-content: space-between; padding: 15px 20px;
+  }
+  .nav-links { display: none; }
+
+  .hero h1 { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+  .philosophy-grid { grid-template-columns: 1fr; }
+  .section-header h2 { font-size: 2rem; }
+  .carousel-container { height: 400px; }
+  .contact { border-radius: 40px 40px 0 0; }
+}
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img class="logo-icon" src="logo.png" alt="NLN Consulting" />
+            <span class="logo-text">NLN CONSULTING</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#nosotros">Filosofía</a></li>
+            <li><a href="#galeria">Galería</a></li>
+            <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a href="#contacto" class="btn-cita">Contacto</a>
+    </nav>
+
+
+<section id="inicio" class="hero">
+  <div class="hero-content">
+    <h1>
+      SOMOS RICOS CUANDO <br>
+      TENEMOS <span style="color:#ffffff;">SALUD</span><br>
+      <span style="color:#ffffff;">TODO LO DEMÁS ES UN LUJO</span>
+    </h1>
+    <p>Consultoría integral en salud corporativa, prevención y bienestar de lujo.</p>
+    <a href="#servicios" class="btn-cita" style="padding: 18px 45px; font-size: 1.1rem;">Ver Servicios</a>
+  </div>
+</section>
+
+
+<section id="nosotros" class="philosophy-section reveal">
+    <div class="section-header">
+        <h2>Nuestra Filosofía</h2>
+        <div class="line"></div>
+    </div>
+
+    <div class="philosophy-grid container">
+        <!-- Texto -->
+        <div class="philosophy-text">
+            <div class="philosophy-card">
+                <h3>Misión</h3>
+                <p>"Proporcionar servicios de laboratorio y gabinete en el área de la salud mediante el empleo de infraestructura tecnológica y humana especializada, con verdadera vocación de servicio."</p>
+            </div>
+
+            <div class="philosophy-card">
+                <h3>Visión</h3>
+                <p>"Consolidarnos como una institución que brinde servicios integrales en el área de la salud, basados en una política de calidad centrada en calidez humana y excelencia."</p>
+            </div>
+        </div>
+
+        <!-- Logo -->
+        <div class="philosophy-logo">
+            <img class="logo-icon" src="logo.png" alt="NLN Consulting">
+        </div>
+    </div>
+</section>
+
+<section id="galeria" class="carousel-section reveal">
+    <div class="section-header">
+        <h2 style="color:var(--white);">Nuestra Galería</h2>
+        <div class="line" style="background:rgba(255,255,255,0.3);"></div>
+    </div>
+    
+    <div class="carousel-container">
+
+        <div class="slide active" style="background-image: url('Carruel/1.jpeg');">
+            <div class="slide-caption">
+                <h3>Instalaciones Modernas</h3>
+                <p>Espacios pensados para tu comodidad y seguridad.</p>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('Carruel/2.jpeg');">
+            <div class="slide-caption">
+                <h3>Área de Atención</h3>
+                <p>Atención cálida y profesional desde tu llegada.</p>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('Carruel/3.jpeg');">
+            <div class="slide-caption">
+                <h3>Equipo Especializado</h3>
+                <p>Tecnología confiable para diagnósticos precisos.</p>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('Carruel/4.jpeg');">
+            <div class="slide-caption">
+                <h3>Laboratorio Clínico</h3>
+                <p>Procesos seguros y resultados confiables.</p>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('Carruel/5.jpeg');">
+            <div class="slide-caption">
+                <h3>Áreas Limpias y Seguras</h3>
+                <p>Cumpliendo con los más altos estándares de higiene.</p>
+            </div>
+        </div>
+
+        <div class="slide" style="background-image: url('Carruel/6.jpeg');">
+            <div class="slide-caption">
+                <h3>Confianza y Profesionalismo</h3>
+                <p>Cuidamos tu salud con compromiso.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    <section id="servicios" class="services-section reveal">
+ <div class="section-header">
+    <h2>Especialidades Médicas</h2>
+    <p style="color:var(--text-light);">Soluciones médicas completas para su organización.</p>
+    <div class="line"></div>
+</div>
+
+<div class="services-grid">
+    <!-- Tarjeta 1: Especialidades (A) -->
+
+
+
+<div class="services-grid">
+
+  <!-- 1. Medicina Interna -->
+  <div class="service-card">
+    <div class="icon-box">🩺</div>
+    <h3>Medicina Interna</h3>
+    <p>Enfermedades crónico-degenerativas (diabetes, EPOC, epilepsia, VIH, Alzheimer, Parkinson), además de neumonía e insuficiencia renal. Incluye signos, síntomas, diagnóstico, tratamiento y prevención.</p><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 2. Ginecología -->
+  <div class="service-card">
+    <div class="icon-box">👩‍⚕️</div>
+    <h3>Ginecología</h3>
+   >
+    <p>Miomatosis uterina, Virus del Papiloma Humano (VPH) y síndrome de ovario poliquístico, con información general de cada padecimiento.</p><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 3. Urología -->
+  <div class="service-card">
+    <div class="icon-box">🧬</div>
+   
+    <h3>Urología</h3>
+    <p>Salud urinaria y reproductiva: infecciones urinarias recurrentes, litiasis renal (piedras) y explicación del procedimiento de vasectomía.</p><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 4. Oncología -->
+  <div class="service-card">
+    <div class="icon-box">🎗️</div>
+    <h3>Oncología</h3>
+    <p>Prevención y generalidades de distintos cánceres: próstata, estómago, pulmón, mama, cervicouterino y testículo. Se explican síntomas, tratamientos y prevención.</p><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 5. Gastroenterología -->
+  <div class="service-card">
+    <div class="icon-box">🍽️</div>
+    <h3>Gastroenterología</h3>
+    <ul>
+      <li>Úlcera péptica</li>
+      <li>Reflujo gastroesofágico</li>
+      <li>Cálculos biliares y colecistitis</li>
+      <li>Pancreatitis</li>
+           <li>Síndrome del intestino irritable</li>
+      <li>Problemas rectales (fisuras, hemorroides, prolapso)</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 6. Neurología -->
+  <div class="service-card">
+    <div class="icon-box">🧠</div>
+    <h3>Neurología</h3>
+   
+    <ul>
+      <li>Enfermedad vascular cerebral (EVC)</li>
+      <li>Esclerosis múltiple</li>
+      <li>Epilepsia</li>
+      <li>Fibromialgia</li>
+    </ul>
+    <p>Con enfoque en síntomas, diagnóstico, tratamiento y prevención.</p><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 7. Neurocirugía -->
+  <div class="service-card">
+    <div class="icon-box">🔬</div>
+    <h3>Neurocirugía</h3>
+    <ul>
+      <li>Hernia de disco</li>
+      <li>Tumores cerebrales</li>
+      <li>Neuralgia del trigémino</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 8. Ortopedia y Medicina Física -->
+  <div class="service-card">
+    <div class="icon-box">🦴</div>
+    <h3>Ortopedia y Medicina Física</h3>
+    <ul>
+      <li>Higiene de columna</li>
+      <li>Síndrome del túnel del carpo</li>
+      <li>Valoración de postura y marcha</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 9. Cardiología -->
+  <div class="service-card">
+    <div class="icon-box">❤️</div>
+    <h3>Cardiología</h3>
+    <ul>
+      <li>Infarto y angina de pecho</li>
+      <li>Hipertensión arterial</li>
+      <li>Hipercolesterolemia</li>
+      <li>Trastornos del ritmo cardíaco</li>
+      <li>Insuficiencia cardiaca</li>
+      <li>Prevención cardiovascular</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 10. Angiología -->
+  <div class="service-card">
+    <div class="icon-box">🩸</div>
+    <h3>Angiología</h3>
+    <ul>
+      <li>Enfermedad venosa crónica</li>
+      <li>Enfermedad arterial periférica</li>
+      <li>Trombosis</li>
+      <li>Pie diabético</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+  <!-- 11. Ot1. Otorrinolaringología (ORL) -->
+  <div class="service-card">
+    <div class="icon-box">👂</div>
+   
+    <h3>Otorrinolaringología (ORL)</h3>
+    <ul>
+      <li>Rinitis</li>
+      <li>Otitis</li>
+      <li>Pérdida de audición</li>
+      <li>Apnea del sueño</li>
+    </ul><!-- [1](https://correoipn-my.sharepoint.com/personal/alopezh2003_alumno_ipn_mx/Documents/Microsoft%20Copilot%20Chat%20Files/NLN%20CONSULTING(1).pdf).pdf) -->
+  </div>
+
+
+
+
+
+
+
+    </section>
+<div class="partners container reveal">
+  <div class="section-header" style="margin-bottom: 20px;">
+    <h3 style="color:#aaa; font-weight:300; font-size:1.2rem; text-transform: uppercase; letter-spacing: 2px;">
+      Nuestros Aliados
+    </h3>
+  </div>
+
+  <div class="partner-logos">
+    <!-- ITEM Prehospitalario -->
+    <a class="partner-item" href="#" aria-label="ITEM Prehospitalario" title="ITEM Prehospitalario">
+      <img 
+        src="item.png" 
+        alt="Logo de ITEM Prehospitalario" 
+        loading="lazy"
+        width="180" height="64"
+      />
+    </a>
+
+    <!-- Óptica LENZEN -->
+    <a class="partner-item" href="#" aria-label="Óptica LENZEN" title="Óptica LENZEN">
+      <img 
+        src="lnzn.png" 
+        alt="Logo de Óptica LENZEN" 
+        loading="lazy"
+        width="180" height="64"
+      />
+    </a>
+
+    <!-- Laboratorio SENSEI -->
+    <a class="partner-item" href="#" aria-label="Laboratorio SENSEI" title="Laboratorio SENSEI">
+      <img 
+        src="sensei.png" 
+        alt="Logo de Laboratorio SENSEI" 
+        loading="lazy"
+        width="180" height="64"
+      />
+    </a>
+  </div>
+</div>
+
+    <section id="contacto" class="contact reveal">
+        <div class="container">
+            <h2>Contáctanos</h2>
+            <p>Estamos listos para transformar la salud de tu empresa.</p>
+            
+            <div class="contact-flex">
+                <div class="contact-box">
+                    <h3>Lic. Lidia Lucio Sánchez</h3>
+                    <p>📞 56.3403.3823</p>
+                    <p>✉️ asesoriaslidialucio@gmail.com</p>
+                </div>
+                <div class="contact-box">
+                    <h3>Lic. Giovanna De Jesús</h3>
+                    <p>📞 55.7073.3916</p>
+                    <p>✉️ seguros.asesoriagiovanna@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background:#1a1a1a; color:#555; padding:30px; text-align:center; font-size:13px;">
+        <p>&copy; 2026 NLN CONSULTING. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // 1. Lógica del Carrusel
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(nextSlide, 5000); // 5 segundos
+
+        // 2. Efecto Navbar al hacer Scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // 3. SCROLL REVEAL (Animación de bienvenida al bajar)
+        // Esto detecta cuando una sección entra en pantalla y le añade la clase 'active'
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+
+            revealElements.forEach((element) => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        // Llamar una vez al inicio para cargar lo que ya se ve
+        revealOnScroll();
+    </script>
+
+</body>
+</html>
