@@ -649,6 +649,192 @@ section { padding: 120px 10%; position: relative; }
             margin: 0;
         }
 
+/* --- 8.5) NUEVA SECCIÓN: MULTIMEDIA --- */
+.multimedia-section {
+    background: #ffffff;
+    padding: 100px 10%;
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.media-item {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s ease;
+}
+
+.media-item img, .media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Efecto de Hover */
+.media-item:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
+    z-index: 10;
+}
+
+.media-item:hover img, .media-item:hover video {
+    transform: scale(1.1);
+}
+
+/* Layout Especial (Mosaico) */
+.item-large { grid-column: span 2; grid-row: span 2; }
+.item-tall { grid-row: span 2; }
+
+/* Overlay sutil */
+.media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(158, 143, 214, 0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.media-item:hover .media-overlay { opacity: 1; }
+
+.media-overlay span {
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Ajuste para que el video de YouTube llene el espacio */
+.media-item iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* Opcional: Si quieres que el overlay no estorbe al dar clic al video */
+.media-item:has(iframe) .media-overlay {
+    pointer-events: none; 
+}
+
+
+/* --- ESTILOS DEL MODAL (LIGHTBOX) --- */
+.modal-gallery {
+    position: fixed;
+    inset: 0;
+    background: rgba(58, 47, 85, 0.85); /* Fondo lila oscuro semi-transparente */
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: none; /* Oculto por defecto */
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modal-gallery.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-gallery.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-media {
+    flex: 1.5;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-media img, .modal-media video, .modal-media iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-info {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f6ff 100%);
+}
+
+.modal-info h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-info p {
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+/* Botones de cierre y navegación */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+.nav-modal {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.nav-modal:hover { background: var(--primary); }
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
+
+@media (max-width: 768px) {
+    .modal-content { flex-direction: column; }
+    .modal-info { padding: 20px; }
+}
+
     </style>
 </head>
 <body>
@@ -944,6 +1130,61 @@ section { padding: 120px 10%; position: relative; }
 
 
     </section>
+
+    <section id="multimedia" class="multimedia-section reveal">
+
+<section id="multimedia" class="multimedia-section reveal">
+    <div class="section-header">
+        <h2>Galería Multimedia</h2>
+        <p>Bienestar en movimiento: Risoterapia, Zumba y más.</p>
+        <div class="line"></div>
+    </div>
+
+    <div class="media-grid">
+        <div class="media-item item-large">
+            <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80">
+                <source src="https://assets.mixkit.co/videos/preview/mixkit-medical-professional-at-work-in-a-hospital-4796-large.mp4" type="video/mp4">
+            </video>
+            <div class="media-overlay"><span>Infraestructura Médica</span></div>
+        </div>
+
+<div class="media-item item-large" 
+     data-type="video" 
+     data-src="zumba_risoterapia.mp4"
+     data-title="Zumba y Risoterapia" 
+     data-description="Nuestras dinámicas de grupo están diseñadas para liberar el estrés, mejorar el clima laboral y recargar de energía positiva a todo tu equipo de trabajo.">
+    
+    <video autoplay muted loop playsinline>
+        <source src="videoplayback.mp4" type="video/mp4">
+        Tu navegador no soporta videos.
+    </video>
+    
+    <div class="media-overlay">
+        <span>Dinámicas: Zumba y Risoterapia</span>
+    </div>
+</div>
+
+        <div class="media-item">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80" alt="Consulta">
+            <div class="media-overlay"><span>Consultoría</span></div>
+        </div>
+
+        <div class="media-item">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80" alt="Laboratorio">
+            <div class="media-overlay"><span>Equipamiento</span></div>
+        </div>
+
+        <div class="media-item item-tall">
+            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80" alt="Examen">
+            <div class="media-overlay"><span>Especialistas</span></div>
+        </div>
+
+        <div class="media-item">
+            <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&q=80" alt="Atención">
+            <div class="media-overlay"><span>Calidez Humana</span></div>
+        </div>
+    </div>
+</section>
 
 <section id="platicas" class="talks-section reveal">
     <div class="section-header">
