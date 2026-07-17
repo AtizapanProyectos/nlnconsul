@@ -835,6 +835,150 @@ section { padding: 120px 10%; position: relative; }
     .modal-info { padding: 20px; }
 }
 
+/* --- 9) SECCIÓN OPINIONES (RESUMEN EN MURO PRINCIPAL) --- */
+.opiniones-section {
+  background: #ffffff;
+}
+
+.opiniones-resumen {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 60px;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto 60px;
+}
+
+.calif-global {
+  text-align:center;
+}
+.calif-global .numero {
+  font-family:'Montserrat', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height:1;
+}
+.calif-global .estrellas-grandes {
+  color: var(--gold);
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  margin: 10px 0;
+}
+.calif-global .sub {
+  color: var(--text-light);
+  font-size: .9rem;
+}
+
+.barras-calif {
+  flex: 1;
+  min-width: 260px;
+  max-width: 380px;
+}
+.barra-fila {
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: .85rem;
+  color: var(--text-light);
+}
+.barra-fila span:first-child { width: 55px; flex-shrink:0; }
+.barra-fondo {
+  flex:1;
+  height: 8px;
+  background: var(--secondary-light);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.barra-llenado {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  border-radius: 10px;
+}
+.barra-fila span:last-child { width: 30px; text-align:right; flex-shrink:0; }
+
+.opiniones-preview-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 26px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+}
+
+.opinion-mini-card {
+  background: var(--secondary-light);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.opinion-mini-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.opinion-mini-card .estrellas { color: var(--gold); font-size: 1rem; margin-bottom: 12px; letter-spacing:2px; }
+.opinion-mini-card p { font-style: italic; color: var(--text-main); font-size: .92rem; margin-bottom: 18px; }
+.opinion-mini-card .autor { display:flex; align-items:center; gap: 12px; }
+.opinion-mini-card .avatar-mini {
+  width:40px; height:40px; border-radius:50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:.9rem; flex-shrink:0;
+}
+.opinion-mini-card .autor strong { display:block; font-size:.88rem; }
+.opinion-mini-card .autor span { font-size:.75rem; color: var(--text-light); }
+
+.opiniones-cta { text-align:center; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
+.btn-secundario {
+  display:inline-block;
+  padding: 15px 36px;
+  border: 2px solid var(--primary);
+  color: var(--primary-dark);
+  border-radius: var(--radius-btn);
+  text-decoration:none;
+  font-weight:bold;
+  transition: all .3s ease;
+  letter-spacing:.5px;
+}
+.btn-secundario:hover { background: var(--primary); color:white; transform: translateY(-3px); }
+
+@media (max-width: 700px) {
+  .opiniones-resumen { gap: 30px; }
+  .calif-global .numero { font-size: 3rem; }
+}
+
+/* --- Formulario inline de opiniones (dentro del index) --- */
+.opinion-form-inline {
+  max-width: 620px;
+  margin: 40px auto 0;
+  background: var(--secondary-light);
+  border-radius: var(--radius-card);
+  padding: 36px;
+  box-shadow: var(--shadow-soft);
+}
+.of-fila { display:flex; gap: 20px; flex-wrap: wrap; }
+.of-fila .of-campo { flex:1; min-width: 220px; }
+.of-campo { margin-bottom: 20px; }
+.of-campo label { display:block; font-weight:700; margin-bottom:8px; font-size:.88rem; color: var(--text-main); }
+.of-campo input[type="text"], .of-campo textarea {
+  width:100%; padding: 12px 16px; border-radius: 12px;
+  border: 2px solid var(--secondary); font-family:'Lato',sans-serif;
+  font-size:.92rem; color: var(--text-main); background:white;
+}
+.of-campo input:focus, .of-campo textarea:focus { outline:none; border-color: var(--primary); }
+.of-campo textarea { resize:vertical; min-height:100px; }
+.of-rating { display:flex; gap:6px; font-size:1.6rem; direction:rtl; justify-content:flex-end; }
+.of-rating input { display:none; }
+.of-rating label { color: var(--secondary); cursor:pointer; transition:color .2s ease; }
+.of-rating input:checked ~ label, .of-rating label:hover, .of-rating label:hover ~ label { color: var(--gold); }
+.of-nota { text-align:center; font-size:.8rem; color: var(--text-light); margin-top:14px; }
+
+/* Badge para opiniones recién agregadas por un visitante */
+.opinion-mini-card .badge-nueva {
+  display:inline-block; background: var(--gold); color:white; font-size:.65rem;
+  font-weight:700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
+  margin-bottom: 10px; letter-spacing:.5px;
+}
+
     </style>
 </head>
 <body>
@@ -849,6 +993,7 @@ section { padding: 120px 10%; position: relative; }
             <li><a href="#nosotros">Filosofía</a></li>
             <li><a href="#galeria">Galería</a></li>
             <li><a href="#servicios">Servicios</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
             <li><a href="#contacto">Contacto</a></li>
         </ul>
         <a href="#contacto" class="btn-cita">Contacto</a>
@@ -1295,6 +1440,74 @@ section { padding: 120px 10%; position: relative; }
   </div>
 </div>
 
+    <section id="opiniones" class="opiniones-section reveal">
+        <div class="section-header">
+            <h2>Lo que dicen de nosotros</h2>
+            <p style="color:var(--text-light);">La opinión de nuestros clientes es nuestro mejor respaldo.</p>
+            <div class="line"></div>
+        </div>
+
+        <div class="opiniones-resumen">
+            <div class="calif-global">
+                <div class="numero" id="calNumero">4.9</div>
+                <div class="estrellas-grandes" id="calEstrellas">★★★★★</div>
+                <div class="sub" id="calSub">Basado en opiniones de clientes</div>
+            </div>
+
+            <div class="barras-calif" id="calBarras">
+                <div class="barra-fila"><span>5 ★</span><div class="barra-fondo"><div class="barra-llenado" style="width:0%;"></div></div><span>0%</span></div>
+                <div class="barra-fila"><span>4 ★</span><div class="barra-fondo"><div class="barra-llenado" style="width:0%;"></div></div><span>0%</span></div>
+                <div class="barra-fila"><span>3 ★</span><div class="barra-fondo"><div class="barra-llenado" style="width:0%;"></div></div><span>0%</span></div>
+                <div class="barra-fila"><span>2 ★</span><div class="barra-fondo"><div class="barra-llenado" style="width:0%;"></div></div><span>0%</span></div>
+                <div class="barra-fila"><span>1 ★</span><div class="barra-fondo"><div class="barra-llenado" style="width:0%;"></div></div><span>0%</span></div>
+            </div>
+        </div>
+
+        <div class="opiniones-preview-grid" id="opinionesPreviewGrid">
+            <!-- Las tarjetas se generan automáticamente con JS (ver script al final) -->
+        </div>
+
+        <div class="opiniones-cta">
+            <a href="testimonios.html" class="btn-cita">Ver todas las opiniones</a>
+            <button type="button" class="btn-secundario" id="btnAbrirFormulario" style="border:2px solid var(--primary); background:transparent; cursor:pointer; font-family:'Lato',sans-serif;">Dejar mi opinión</button>
+        </div>
+
+        <!-- Formulario inline, oculto hasta que se pica "Dejar mi opinión" -->
+        <div class="opinion-form-inline" id="opinionFormInline" style="display:none;">
+            <form id="formOpinionIndex">
+                <div class="of-fila">
+                    <div class="of-campo">
+                        <label for="ofNombre">Nombre</label>
+                        <input type="text" id="ofNombre" required placeholder="Tu nombre completo">
+                    </div>
+                    <div class="of-campo">
+                        <label for="ofEmpresa">Empresa / Puesto (opcional)</label>
+                        <input type="text" id="ofEmpresa" placeholder="Ej. Gerente de RH">
+                    </div>
+                </div>
+
+                <div class="of-campo">
+                    <label>Calificación</label>
+                    <div class="of-rating">
+                        <input type="radio" id="ofE5" name="ofRating" value="5" checked><label for="ofE5">★</label>
+                        <input type="radio" id="ofE4" name="ofRating" value="4"><label for="ofE4">★</label>
+                        <input type="radio" id="ofE3" name="ofRating" value="3"><label for="ofE3">★</label>
+                        <input type="radio" id="ofE2" name="ofRating" value="2"><label for="ofE2">★</label>
+                        <input type="radio" id="ofE1" name="ofRating" value="1"><label for="ofE1">★</label>
+                    </div>
+                </div>
+
+                <div class="of-campo">
+                    <label for="ofOpinion">Tu opinión</label>
+                    <textarea id="ofOpinion" required placeholder="Cuéntanos cómo fue tu experiencia con NLN Consulting..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-cita" style="border:none; width:100%; cursor:pointer;">Publicar mi opinión</button>
+                <p class="of-nota">✨ Tu opinión se publica al instante aquí y en la página de opiniones.</p>
+            </form>
+        </div>
+    </section>
+
     <section id="contacto" class="contact reveal">
         <div class="container">
             <h2>Contáctanos</h2>
@@ -1375,6 +1588,131 @@ section { padding: 120px 10%; position: relative; }
         window.addEventListener('scroll', revealOnScroll);
         // Llamar una vez al inicio para cargar lo que ya se ve
         revealOnScroll();
+
+        // ============================================================
+        // 4. SISTEMA DE OPINIONES
+        // ============================================================
+        // Ahora mismo esto guarda las opiniones en el navegador de cada
+        // visitante (localStorage), por eso solo TÚ ves las que dejas
+        // en TU navegador de momento. Cuando tengas tu servidor listo,
+        // solo reemplaza el CONTENIDO de las 2 funciones de abajo
+        // (obtenerOpiniones y guardarOpinion) por un fetch() a tu API.
+        // El resto del código (renderizado, formulario, etc.) no
+        // necesita cambiar nada. Así queda todo listo para el cambio.
+
+        const OpinionesStore = {
+            CLAVE: 'nln_opiniones',
+
+            // 🔧 AQUÍ CONECTAS TU SERVIDOR (lectura):
+            // reemplaza por: return await fetch('https://tu-servidor.com/api/opiniones').then(r => r.json());
+            obtenerOpiniones: function () {
+                const guardado = localStorage.getItem(this.CLAVE);
+                return guardado ? JSON.parse(guardado) : [];
+            },
+
+            // 🔧 AQUÍ CONECTAS TU SERVIDOR (escritura):
+            // reemplaza por: await fetch('https://tu-servidor.com/api/opiniones', {
+            //   method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(opinion)
+            // });
+            guardarOpinion: function (opinion) {
+                const opiniones = this.obtenerOpiniones();
+                opiniones.unshift(opinion); // la más nueva primero
+                localStorage.setItem(this.CLAVE, JSON.stringify(opiniones));
+            }
+        };
+
+        // Opiniones de ejemplo/base (las que ya tenías redactadas)
+        const opinionesBase = [
+            { nombre:'Roberto Medina', empresa:'Gerente de RH', rating:5, opinion:'Las pláticas de salud emocional cambiaron el ambiente de nuestro equipo. El estrés bajó muchísimo desde que empezamos con NLN.', nueva:false },
+            { nombre:'Carla Vázquez', empresa:'Directora de Talento', rating:5, opinion:'La atención de las licenciadas es cercana y profesional. Se nota que les importa el bienestar de los colaboradores.', nueva:false },
+            { nombre:'Jorge López', empresa:'Coordinador de Seguridad', rating:4, opinion:'Los talleres de primeros auxilios y RCP nos dieron mucha confianza como equipo. Muy recomendable.', nueva:false }
+        ];
+
+        function iniciales(nombre) {
+            return nombre.trim().split(' ').filter(Boolean).slice(0,2).map(p => p[0].toUpperCase()).join('');
+        }
+
+        function escaparHTML(texto) {
+            const div = document.createElement('div');
+            div.textContent = texto;
+            return div.innerHTML;
+        }
+
+        function renderOpinionesIndex() {
+            const grid = document.getElementById('opinionesPreviewGrid');
+            if (!grid) return;
+
+            const guardadas = OpinionesStore.obtenerOpiniones().map(o => ({...o, nueva:true}));
+            const todas = [...guardadas, ...opinionesBase];
+
+            // Vista previa: mostramos hasta 6 en el index
+            grid.innerHTML = todas.slice(0, 6).map(o => `
+                <div class="opinion-mini-card">
+                    ${o.nueva ? '<span class="badge-nueva">Nueva</span><br>' : ''}
+                    <div class="estrellas">${'★'.repeat(o.rating)}${'☆'.repeat(5-o.rating)}</div>
+                    <p>"${escaparHTML(o.opinion)}"</p>
+                    <div class="autor">
+                        <div class="avatar-mini">${iniciales(o.nombre)}</div>
+                        <div><strong>${escaparHTML(o.nombre)}</strong><span>${escaparHTML(o.empresa || '')}</span></div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Recalcular resumen de calificaciones (promedio y barras)
+            const total = todas.length;
+            if (total === 0) return;
+            const promedio = (todas.reduce((s,o) => s + Number(o.rating), 0) / total);
+            document.getElementById('calNumero').textContent = promedio.toFixed(1);
+            document.getElementById('calEstrellas').textContent = '★'.repeat(Math.round(promedio)) + '☆'.repeat(5-Math.round(promedio));
+            document.getElementById('calSub').textContent = `Basado en ${total} opinion${total===1?'':'es'} de clientes`;
+
+            const conteos = [5,4,3,2,1].map(n => todas.filter(o => Number(o.rating) === n).length);
+            const barras = document.querySelectorAll('#calBarras .barra-fila');
+            conteos.forEach((cuenta, i) => {
+                const pct = Math.round((cuenta/total)*100);
+                barras[i].querySelector('.barra-llenado').style.width = pct + '%';
+                barras[i].querySelector('span:last-child').textContent = pct + '%';
+            });
+        }
+
+        // Mostrar/ocultar formulario inline
+        const btnAbrir = document.getElementById('btnAbrirFormulario');
+        const formInline = document.getElementById('opinionFormInline');
+        if (btnAbrir) {
+            btnAbrir.addEventListener('click', () => {
+                const abierto = formInline.style.display === 'block';
+                formInline.style.display = abierto ? 'none' : 'block';
+                btnAbrir.textContent = abierto ? 'Dejar mi opinión' : 'Cancelar';
+                if (!abierto) formInline.scrollIntoView({ behavior:'smooth', block:'center' });
+            });
+        }
+
+        // Guardar nueva opinión desde el index
+        const formIndex = document.getElementById('formOpinionIndex');
+        if (formIndex) {
+            formIndex.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const nombre = document.getElementById('ofNombre').value.trim();
+                const empresa = document.getElementById('ofEmpresa').value.trim();
+                const rating = document.querySelector('input[name="ofRating"]:checked').value;
+                const opinion = document.getElementById('ofOpinion').value.trim();
+
+                OpinionesStore.guardarOpinion({
+                    nombre, empresa, rating: Number(rating), opinion,
+                    fecha: new Date().toISOString()
+                });
+
+                formIndex.reset();
+                formInline.style.display = 'none';
+                btnAbrir.textContent = 'Dejar mi opinión';
+                renderOpinionesIndex();
+
+                // Pequeño mensaje de agradecimiento
+                alert('¡Gracias por tu opinión! Ya se publicó en esta página. 💜');
+            });
+        }
+
+        renderOpinionesIndex();
     </script>
 
 </body>
