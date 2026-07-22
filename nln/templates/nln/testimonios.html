@@ -1,0 +1,1121 @@
+{% load static %}
+{% load nln_extras %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'nln/img/logo.ico' %}" type="image/x-icon">
+    <title>Opiniones de Clientes | NLN Consulting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <style>
+     /* --- 1) CONFIGURACIÓN VISUAL · PALETA LILA SUAVE --- */
+:root {
+  /* Colores principales suaves */
+  --primary: #9E8FD6;           /* Lila suave elegante */
+  --primary-dark: #8776C6;      /* Lila un poco más intenso pero no rudo */
+  --secondary: #CFC6F7;         /* Lila pastel */
+  --secondary-light: #EEE9FF;   /* Lavanda muy clara */
+  --accent: #E6DAFF;            /* Pastel para detalles */
+  --gold: #D4AF37;
+
+  /* Fondo y textos */
+  --bg-body: #FAF9FF;           /* Blanco lavanda muy sutil */
+  --text-main: #3A2F55;         /* Gris-lila legible */
+  --text-light: #6B5A8C;        /* Secundario suave */
+
+  /* Efectos Glass y sombras suaves */
+  --glass-bg: rgba(255, 255, 255, 0.78);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(14px);
+  --shadow-soft: 0 10px 40px -10px rgba(60, 35, 120, 0.12);
+  --shadow-hover: 0 20px 50px -12px rgba(120, 90, 200, 0.25);
+
+  --radius-card: 24px;
+  --radius-btn: 50px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  color: var(--text-main);
+  background-color: var(--bg-body);
+  /* Fondo sutil para dar profundidad */
+  background-image: radial-gradient(circle at 10% 20%, #F5F3FF 0%, #F0EFF9 90%);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+h1, h2, h3 { font-family: 'Montserrat', sans-serif; font-weight: 700; }
+
+/* --- 2) NAVBAR (MODERNA FLOTANTE) --- */
+.navbar {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 1200px;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  border-radius: 50px;
+
+  z-index: 1000;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  top: 0;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 0 0 20px 20px;
+  padding: 15px 5%;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-icon {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: white;
+}
+
+.nav-links { display: flex; gap: 35px; list-style: none; }
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--text-main);
+  font-weight: 600;
+  font-size: 0.9rem;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0; height: 2px;
+  bottom: -5px; left: 0;
+  background-color: var(--primary);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after { width: 100%; }
+
+/* Botón CTA en tonos suaves */
+.btn-cita {
+  padding: 12px 30px;
+  background: linear-gradient(90deg, var(--primary) 0%, #B6A8F2 100%);
+  color: white;
+  border-radius: var(--radius-btn);
+  text-decoration: none;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(150, 130, 220, 0.35);
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+}
+.btn-cita:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(140, 120, 220, 0.45);
+}
+
+/* --- 3) HERO (GLOBAL) · Base (no afecta a #inicio porque lo sobreescribimos abajo) --- */
+.hero {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+  position: relative;
+
+  /* Mantenemos un estilo por default para otras páginas si lo usas */
+  background: linear-gradient(135deg, rgba(45,36,56,0.9), rgba(74,64,99,0.7)),
+              url('https://images.unsplash.com/photo-1576091160550-2187d80a16f7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* Decoración de fondo abstracta */
+.hero::before {
+  content: '';
+  position: absolute; bottom: 0; left: 0;
+  width: 100%; height: 100px;
+  background: linear-gradient(to top, var(--bg-body), transparent);
+}
+
+.hero-content { max-width: 900px; }
+
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  margin-bottom: 25px;
+  line-height: 1.1;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.25);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 50px;
+  color: rgba(255,255,255,0.9);
+}
+
+/* --- 3.1) HERO ESPECÍFICO DE INICIO (CLARO, ELEGANTE) --- */
+/* Usamos el ID #inicio para que sea independiente */
+#inicio.hero {
+  color: var(--text-main);
+  background: linear-gradient(160deg, #FFFFFF 0%, #F8F6FF 55%, #F2EEFF 100%);
+  background-attachment: scroll; /* Evita el efecto 'fixed' que puede verse pesado */
+}
+
+/* Al ser fondo claro, forzamos los textos a tonos oscuros dentro del hero */
+#inicio.hero h1,
+#inicio.hero p { color: var(--text-main); text-shadow: none; }
+
+/* Si en tu HTML dejaste spans en blanco (#ffffff), los neutralizamos aquí sin tocar el HTML */
+#inicio.hero h1 span,
+#inicio.hero p span {
+  color: var(--primary) !important; /* Lila bonito para resaltar palabras */
+}
+
+/* --- 4) SECCIONES GENERALES --- */
+section { padding: 120px 10%; position: relative; }
+
+.section-header {
+  text-align: center;
+  margin-bottom: 80px;
+  position: relative;
+}
+
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  color: var(--primary);
+  margin-bottom: 20px;
+  position: relative; display: inline-block;
+}
+
+.section-header .line {
+  width: 60px; height: 6px;
+  background: var(--gold);
+  margin: 0 auto; border-radius: 10px;
+  transition: width 0.3s;
+}
+.section-header:hover .line { width: 120px; }
+
+/* --- 5) FILOSOFÍA (Glass Cards) --- */
+.philosophy-grid {
+   display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.philosophy-text {
+    flex: 1;
+}
+
+.philosophy-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.philosophy-logo img {
+    width: 100%;
+    height: auto;
+    max-width: 410px; /* controla qué tan grande lo quieres */
+    opacity: 0.9; /* opcional, elegante */
+}
+
+/* Tarjetas */
+.philosophy-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+
+.philosophy-card {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  padding: 50px;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative; overflow: hidden;
+}
+
+.philosophy-card::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 6px; height: 100%;
+  background: var(--gold);
+  transition: height 0.3s;
+}
+
+.philosophy-card:hover {
+  transform: translateY(-15px);
+  box-shadow: var(--shadow-hover);
+}
+
+.philosophy-card h3 {
+  color: var(--primary);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 15px;
+  font-size: 1.5rem;
+}
+.philosophy-card p { color: var(--text-light); font-size: 1.05rem; }
+
+/* --- 6) CARRUSEL --- */
+.carousel-section {
+  padding: 100px 0;
+  background: linear-gradient(180deg, #EEEAFE 0%, #EDE7FF 100%);
+  position: relative;
+}
+
+.carousel-container {
+  width: 100%; max-width: 1100px; margin: 0 auto;
+  height: 560px;
+  border-radius: 30px;
+  background-color: #ffffff; /* color de las bandas */
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.2);
+  overflow: hidden; position: relative;
+}
+
+.slide {
+  position: absolute; inset: 0;
+  opacity: 0; transform: scale(1.06);
+  transition: opacity 1s ease, transform 6s linear;
+  background-size: contain; 
+  background-position: center;
+  background-repeat: no-repeat;
+
+}
+.slide.active { opacity: 1; transform: scale(1); }
+
+.slide-caption {
+  position: absolute; left: 40px; right: 40px; bottom: 40px;
+  background: rgba(255, 255, 255, 0.28);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.35);
+  padding: 30px; border-radius: 20px;
+  color: var(--text-main);
+  max-width: 340px;
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+/* --- 7) SERVICIOS --- */
+.services-section { background-color: var(--bg-body); }
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px; max-width: 1200px; margin: 0 auto;
+}
+
+.service-card {
+  background: #ffffff;
+  padding: 50px 30px;
+  border-radius: var(--radius-card);
+  text-align: center;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: var(--shadow-soft);
+  transition: all 0.4s ease;
+  position: relative; z-index: 1;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: var(--shadow-hover);
+}
+
+.icon-box {
+  font-size: 45px; margin-bottom: 25px;
+  color: var(--primary);
+  background: #F5F1FF;
+  width: 90px; height: 90px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: transform 0.3s, background 0.3s, color 0.3s;
+}
+
+.service-card:hover .icon-box {
+  transform: rotate(10deg) scale(1.1);
+  background: var(--secondary); color: white;
+}
+
+.service-card ul {
+  text-align: left; margin-top: 25px; list-style: none; color: var(--text-light);
+}
+.service-card li { margin-bottom: 12px; padding-left: 10px; }
+.service-card li::before { content: "• "; color: var(--gold); font-weight: bold; margin-right: 5px; }
+
+/* --- 8) PARTNERS --- */
+.partners { padding: 80px 0; }
+.partner-logos {
+  display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; margin-top: 50px;
+}
+/* Tarjeta base (puedes mantener tus estilos, ajusté padding y bordes) */
+.partner-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;                /* antes tenías 75px, era demasiado y puede “apretar” el logo */
+  background: #fff;
+  border-radius: 24px;          /* 55px es válido, pero 24px se ve más sobrio; ajusta a gusto */
+  font-weight: 700;
+  color: #999;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: 0.3s;
+  border: 1px solid transparent;
+
+  /* Tamaño máximo del “marco” de cada logo */
+  width: 100%;
+  max-width: 280px;            /* controla el ancho de la tarjeta */
+  aspect-ratio: 3 / 2;         /* crea una caja estable (3:2). Puedes usar 16/9 o 1/1 */
+  overflow: hidden;            /* por si entra un logo con proporción rara */
+}
+
+/* Hover */
+.partner-item:hover {
+  color: var(--primary);
+  border-color: var(--secondary);
+  transform: translateY(-5px);
+}
+
+/* Imagen del logo: que conserve proporción y nunca se deforme */
+.partner-item img {
+  display: block;
+  max-width: 90%;
+  max-height: 90%;
+  width: auto;                 /* ¡importante! que no estire horizontal */
+  height: auto;                /* ¡importante! que no estire vertical */
+  object-fit: contain;         /* encaja sin deformar dentro de la tarjeta */
+  object-position: center;     /* centrado perfecto */
+}
+
+/* Grid contenedor (opcional si ya tienes estilos para .partner-logos) */
+.partner-logos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
+
+/* --- 7.5) NUEVA SECCIÓN: PLÁTICAS Y TALLERES --- */
+.talks-section {
+    background: linear-gradient(to bottom, #fcfbff, #f2efff);
+    padding-bottom: 150px;
+}
+
+.talks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.workshop-card {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 24px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(158, 143, 214, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.workshop-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(158, 143, 214, 0.25);
+    border-color: var(--secondary);
+}
+
+.workshop-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 6px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+.workshop-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.workshop-icon {
+    font-size: 2.5rem;
+    background: var(--secondary-light);
+    width: 65px; height: 65px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+.workshop-card h3 {
+    color: var(--text-main);
+    font-size: 1.35rem;
+    margin: 0;
+}
+
+.workshop-card p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+}
+
+.tag-list li {
+    background: white;
+    border: 1px solid var(--secondary);
+    color: var(--primary-dark);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+
+
+/* --- 9) CONTACTO (GLOBAL) --- */
+.contact {
+  /* Antes era un gradiente oscuro; lo suavizamos globalmente */
+  background: linear-gradient(180deg, #FFFFFF 0%, #F7F4FF 100%);
+  color: var(--text-main);
+  border-top-left-radius: 80px;
+  border-top-right-radius: 80px;
+  padding: 100px 5%;
+}
+
+/* --- 9.1) CONTACTO ESPECÍFICO #contacto (más blanco/elegante) --- */
+#contacto.contact {
+  background: linear-gradient(160deg, #FFFFFF 0%, #FBFAFF 45%, #F3EEFF 100%);
+}
+
+.contact-flex {
+  display: flex; justify-content: center; gap: 40px; margin-top: 60px; flex-wrap: wrap;
+}
+
+.contact-box {
+  background: rgba(255,255,255,0.75);
+  padding: 40px; border-radius: 30px; width: 350px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(160,140,220,0.20);
+  transition: transform 0.3s, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 10px 30px -10px rgba(120, 90, 200, 0.18);
+}
+
+.contact-box:hover {
+  transform: translateY(-4px);
+  background: rgba(255,255,255,0.92);
+  border-color: rgba(120,90,200,0.35);
+  box-shadow: 0 18px 40px -14px rgba(120, 90, 200, 0.28);
+}
+
+.contact h2 { color: var(--primary); }
+.contact-box h3 { margin-bottom: 15px; color: var(--primary-dark); }
+.contact-box p { font-size: 1.1rem; margin-bottom: 10px; opacity: 0.95; }
+
+/* --- 10) ANIMACIONES DE SCROLL (REVEAL) --- */
+.reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease; }
+.reveal.active { opacity: 1; transform: translateY(0); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 11) RESPONSIVE --- */
+@media (max-width: 768px) {
+  .navbar {
+    width: 100%; top: 0; border-radius: 0;
+    justify-content: space-between; padding: 15px 20px;
+  }
+  .nav-links { display: none; }
+
+  .hero h1 { font-size: clamp(1.8rem, 6vw, 2.5rem); }
+  .philosophy-grid { grid-template-columns: 1fr; }
+  .section-header h2 { font-size: 2rem; }
+  .carousel-container { height: 400px; }
+  .contact { border-radius: 40px 40px 0 0; }
+}
+
+
+        /* Contenedor de la Tarjeta */
+        .service-card {
+            background: #ffffff;
+            width: 300px;
+            border-radius: 20px;
+            overflow: hidden; /* Corta el video para que siga el redondeo */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+
+        /* Contenedor del Video */
+.video-wrapper {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background-color: #000; /* Fondo negro mientras carga */
+        }
+
+.video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ajuste perfecto sin deformar */
+            opacity: 0.9;
+        }
+
+        /* Caja de Icono Flotante */
+.icon-box {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            position: absolute;
+            top: 155px; /* Lo posiciona entre el video y el texto */
+            left: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            z-index: 2;
+        }
+
+        /* Contenido de Texto */
+        .card-content {
+            padding: 40px 20px 10px 20px;
+        }
+
+        .service-card h3 {
+            margin: 0 0 10px 0;
+            color: #2c3e50;
+            font-size: 1.4rem;
+        }
+
+        .service-card p {
+            font-size: 0.95rem;
+            color: #636e72;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+/* --- 8.5) NUEVA SECCIÓN: MULTIMEDIA --- */
+.multimedia-section {
+    background: #ffffff;
+    padding: 100px 10%;
+}
+
+.media-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.media-item {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.4s ease;
+}
+
+.media-item img, .media-item video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* Efecto de Hover */
+.media-item:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
+    z-index: 10;
+}
+
+.media-item:hover img, .media-item:hover video {
+    transform: scale(1.1);
+}
+
+/* Layout Especial (Mosaico) */
+.item-large { grid-column: span 2; grid-row: span 2; }
+.item-tall { grid-row: span 2; }
+
+/* Overlay sutil */
+.media-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(158, 143, 214, 0.4), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.media-item:hover .media-overlay { opacity: 1; }
+
+.media-overlay span {
+    color: white;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+/* Ajuste para que el video de YouTube llene el espacio */
+.media-item iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* Opcional: Si quieres que el overlay no estorbe al dar clic al video */
+.media-item:has(iframe) .media-overlay {
+    pointer-events: none; 
+}
+
+
+/* --- ESTILOS DEL MODAL (LIGHTBOX) --- */
+.modal-gallery {
+    position: fixed;
+    inset: 0;
+    background: rgba(58, 47, 85, 0.85); /* Fondo lila oscuro semi-transparente */
+    backdrop-filter: blur(10px);
+    z-index: 2000;
+    display: none; /* Oculto por defecto */
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modal-gallery.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    max-width: 1000px;
+    width: 100%;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+    transform: scale(0.8);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-gallery.active .modal-content {
+    transform: scale(1);
+}
+
+.modal-media {
+    flex: 1.5;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-media img, .modal-media video, .modal-media iframe {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.modal-info {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f6ff 100%);
+}
+
+.modal-info h3 {
+    color: var(--primary);
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.modal-info p {
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+/* Botones de cierre y navegación */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    z-index: 2001;
+}
+
+.nav-modal {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.nav-modal:hover { background: var(--primary); }
+.prev-btn { left: 20px; }
+.next-btn { right: 20px; }
+
+@media (max-width: 768px) {
+    .modal-content { flex-direction: column; }
+    .modal-info { padding: 20px; }
+}
+
+/* --- 9) SECCIÓN OPINIONES (RESUMEN EN MURO PRINCIPAL) --- */
+.opiniones-section {
+  background: #ffffff;
+}
+
+.opiniones-resumen {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap: 60px;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto 60px;
+}
+
+.calif-global {
+  text-align:center;
+}
+.calif-global .numero {
+  font-family:'Montserrat', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height:1;
+}
+.calif-global .estrellas-grandes {
+  color: var(--gold);
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  margin: 10px 0;
+}
+.calif-global .sub {
+  color: var(--text-light);
+  font-size: .9rem;
+}
+
+.barras-calif {
+  flex: 1;
+  min-width: 260px;
+  max-width: 380px;
+}
+.barra-fila {
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: .85rem;
+  color: var(--text-light);
+}
+.barra-fila span:first-child { width: 55px; flex-shrink:0; }
+.barra-fondo {
+  flex:1;
+  height: 8px;
+  background: var(--secondary-light);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.barra-llenado {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--gold));
+  border-radius: 10px;
+}
+.barra-fila span:last-child { width: 30px; text-align:right; flex-shrink:0; }
+
+.opiniones-preview-grid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 26px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+}
+
+.opinion-mini-card {
+  background: var(--secondary-light);
+  border-radius: var(--radius-card);
+  padding: 28px;
+  box-shadow: var(--shadow-soft);
+  transition: transform .3s ease, box-shadow .3s ease;
+}
+.opinion-mini-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+.opinion-mini-card .estrellas { color: var(--gold); font-size: 1rem; margin-bottom: 12px; letter-spacing:2px; }
+.opinion-mini-card p { font-style: italic; color: var(--text-main); font-size: .92rem; margin-bottom: 18px; }
+.opinion-mini-card .autor { display:flex; align-items:center; gap: 12px; }
+.opinion-mini-card .avatar-mini {
+  width:40px; height:40px; border-radius:50%;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  display:flex; align-items:center; justify-content:center;
+  color:white; font-weight:700; font-size:.9rem; flex-shrink:0;
+}
+.opinion-mini-card .autor strong { display:block; font-size:.88rem; }
+.opinion-mini-card .autor span { font-size:.75rem; color: var(--text-light); }
+
+.opiniones-cta { text-align:center; display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
+.btn-secundario {
+  display:inline-block;
+  padding: 15px 36px;
+  border: 2px solid var(--primary);
+  color: var(--primary-dark);
+  border-radius: var(--radius-btn);
+  text-decoration:none;
+  font-weight:bold;
+  transition: all .3s ease;
+  letter-spacing:.5px;
+}
+.btn-secundario:hover { background: var(--primary); color:white; transform: translateY(-3px); }
+
+@media (max-width: 700px) {
+  .opiniones-resumen { gap: 30px; }
+  .calif-global .numero { font-size: 3rem; }
+}
+
+/* --- Formulario inline de opiniones (dentro del index) --- */
+.opinion-form-inline {
+  max-width: 620px;
+  margin: 40px auto 0;
+  background: var(--secondary-light);
+  border-radius: var(--radius-card);
+  padding: 36px;
+  box-shadow: var(--shadow-soft);
+}
+.of-fila { display:flex; gap: 20px; flex-wrap: wrap; }
+.of-fila .of-campo { flex:1; min-width: 220px; }
+.of-campo { margin-bottom: 20px; }
+.of-campo label { display:block; font-weight:700; margin-bottom:8px; font-size:.88rem; color: var(--text-main); }
+.of-campo input[type="text"], .of-campo textarea {
+  width:100%; padding: 12px 16px; border-radius: 12px;
+  border: 2px solid var(--secondary); font-family:'Lato',sans-serif;
+  font-size:.92rem; color: var(--text-main); background:white;
+}
+.of-campo input:focus, .of-campo textarea:focus { outline:none; border-color: var(--primary); }
+.of-campo textarea { resize:vertical; min-height:100px; }
+.of-rating { display:flex; gap:6px; font-size:1.6rem; direction:rtl; justify-content:flex-end; }
+.of-rating input { display:none; }
+.of-rating label { color: var(--secondary); cursor:pointer; transition:color .2s ease; }
+.of-rating input:checked ~ label, .of-rating label:hover, .of-rating label:hover ~ label { color: var(--gold); }
+.of-nota { text-align:center; font-size:.8rem; color: var(--text-light); margin-top:14px; }
+
+/* Badge para opiniones recién agregadas por un visitante */
+.opinion-mini-card .badge-nueva {
+  display:inline-block; background: var(--gold); color:white; font-size:.65rem;
+  font-weight:700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase;
+  margin-bottom: 10px; letter-spacing:.5px;
+}
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img class="logo-icon" src="{% static 'nln/img/logo.png' %}" alt="NLN Consulting" />
+            <span class="logo-text">NLN CONSULTING</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}#inicio">Inicio</a></li>
+            <li><a href="{% url 'index' %}#nosotros">Filosofía</a></li>
+            <li><a href="{% url 'index' %}#galeria">Galería</a></li>
+            <li><a href="{% url 'index' %}#servicios">Servicios</a></li>
+            <li><a href="{% url 'testimonios' %}">Opiniones</a></li>
+            <li><a href="{% url 'index' %}#contacto">Contacto</a></li>
+        </ul>
+        <a href="{% url 'index' %}#contacto" class="btn-cita">Contacto</a>
+    </nav>
+
+    <section id="opiniones-todas" class="opiniones-section reveal" style="padding-top:180px;">
+        <div class="section-header">
+            <h2>Opiniones de Nuestros Clientes</h2>
+            <p style="color:var(--text-light);">Todo lo que nuestros clientes han compartido sobre su experiencia con NLN Consulting.</p>
+            <div class="line"></div>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mensaje-flash mensaje-{{ message.tags }}" style="max-width:620px; margin:0 auto 30px; padding:16px 22px; border-radius:14px; text-align:center; font-weight:600; {% if message.tags == 'error' %}background:#FFE6E6; color:#B23A3A;{% else %}background:var(--secondary-light); color:var(--primary-dark);{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <p style="text-align:center; color:var(--text-light); margin-bottom:40px;">
+            {{ total_opiniones }} opinion{{ total_opiniones|pluralize:"es" }} en total
+        </p>
+
+        <div class="opiniones-preview-grid">
+            {% for o in opiniones %}
+            <div class="opinion-mini-card">
+                <div class="estrellas">{% for i in "12345" %}{% if forloop.counter <= o.rating %}★{% else %}☆{% endif %}{% endfor %}</div>
+                <p>"{{ o.opinion }}"</p>
+                <div class="autor">
+                    <div class="avatar-mini">{{ o.nombre|iniciales }}</div>
+                    <div><strong>{{ o.nombre }}</strong><span>{{ o.empresa }}</span></div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="text-align:center; color:var(--text-light); grid-column:1/-1;">Aún no hay opiniones. ¡Sé el primero en dejar la tuya! 💜</p>
+            {% endfor %}
+        </div>
+
+        <div class="opiniones-cta">
+            <button type="button" class="btn-secundario" id="btnAbrirFormulario" style="border:2px solid var(--primary); background:transparent; cursor:pointer; font-family:'Lato',sans-serif;">Dejar mi opinión</button>
+        </div>
+
+        <div class="opinion-form-inline" id="opinionFormInline" style="display:none;">
+            <form method="post" action="{% url 'crear_opinion' %}">
+                {% csrf_token %}
+                <div class="of-fila">
+                    <div class="of-campo">
+                        <label for="ofNombre">Nombre</label>
+                        <input type="text" id="ofNombre" name="nombre" required placeholder="Tu nombre completo">
+                    </div>
+                    <div class="of-campo">
+                        <label for="ofEmpresa">Empresa / Puesto (opcional)</label>
+                        <input type="text" id="ofEmpresa" name="empresa" placeholder="Ej. Gerente de RH">
+                    </div>
+                </div>
+
+                <div class="of-campo">
+                    <label>Calificación</label>
+                    <div class="of-rating">
+                        <input type="radio" id="ofE5" name="rating" value="5" checked><label for="ofE5">★</label>
+                        <input type="radio" id="ofE4" name="rating" value="4"><label for="ofE4">★</label>
+                        <input type="radio" id="ofE3" name="rating" value="3"><label for="ofE3">★</label>
+                        <input type="radio" id="ofE2" name="rating" value="2"><label for="ofE2">★</label>
+                        <input type="radio" id="ofE1" name="rating" value="1"><label for="ofE1">★</label>
+                    </div>
+                </div>
+
+                <div class="of-campo">
+                    <label for="ofOpinion">Tu opinión</label>
+                    <textarea id="ofOpinion" name="opinion" required placeholder="Cuéntanos cómo fue tu experiencia con NLN Consulting..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-cita" style="border:none; width:100%; cursor:pointer;">Publicar mi opinión</button>
+                <p class="of-nota">✨ Tu opinión se publica al instante en esta página.</p>
+            </form>
+        </div>
+    </section>
+
+    <footer style="background:#1a1a1a; color:#555; padding:30px; text-align:center; font-size:13px;">
+        <p>&copy; 2026 NLN CONSULTING. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        // Efecto Navbar al hacer Scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll reveal
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            const windowHeight = window.innerHeight;
+            const elementVisible = 150;
+            revealElements.forEach((element) => {
+                const elementTop = element.getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Mostrar/ocultar formulario inline
+        const btnAbrir = document.getElementById('btnAbrirFormulario');
+        const formInline = document.getElementById('opinionFormInline');
+        if (btnAbrir) {
+            btnAbrir.addEventListener('click', () => {
+                const abierto = formInline.style.display === 'block';
+                formInline.style.display = abierto ? 'none' : 'block';
+                btnAbrir.textContent = abierto ? 'Dejar mi opinión' : 'Cancelar';
+                if (!abierto) formInline.scrollIntoView({ behavior:'smooth', block:'center' });
+            });
+        }
+    </script>
+
+</body>
+</html>
