@@ -130,3 +130,5 @@ STATIC_URL = 'static/'
 # (Opcional) Si en el futuro quieres subir PDFs o fotos desde el admin de Django, agregas esto:
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ALLOWED_HOSTS = ['*']
